@@ -9,7 +9,7 @@ If you are using the Arduino Leonardo (like I am), then you need to connect to m
 ## The code itself
 You can download the Adafruit library from here: https://github.com/adafruit/Adafruit-PN532. You need to copy-paste the examples file into your Arduino library folder to acces it from the Arduino text editor. From there, you can acces it by going to File -> Examples -> Adafruit PN523 -> ntag2xx_read. 
 
-#### Defining the pins
+#### Changing some code
 When you first open the file, you will see something like this:
 ```#define PN532_SCK  (2)
 #define PN532_MOSI (3)
@@ -25,12 +25,17 @@ As you can see, the library itself defines two functions to the same pin. If you
 
 When you use a software or a hardware SPI connection (don't know what it is? Me neither. Luckely you will soon find out which one you're using) you need to change something in the code. 
 You will find this line of code:
-```Adafruit_PN532 nfc(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
+```
+Adafruit_PN532 nfc(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
 ```
 If you upload the code to your Arduino, and it works, you do not need to change anything. If it doesn't, then you need to commend the previous line out, and uncomment the following line of code:
-``` Adafruit_PN532 nfc(PN532_SS);
+```
+Adafruit_PN532 nfc(PN532_SS);
 ```
 There is a third option. If you use an I2C connection (don't know what this is either) then you need to commend out both lines, and uncomment this one:
-``` Adafruit_PN532 nfc(PN532_IRQ, PN532_RESET);
+```
+Adafruit_PN532 nfc(PN532_IRQ, PN532_RESET);
 ```
 Again, if you don't know which one to use, just try and see if it works.
+
+### Explaination of the code
