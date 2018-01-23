@@ -39,3 +39,54 @@ Adafruit_PN532 nfc(PN532_IRQ, PN532_RESET);
 Again, if you don't know which one to use, just try and see if it works.
 
 ### Explaination of the code
+In the void setup, you will see the following:
+```
+void setup(void) {
+  #ifndef ESP8266
+    while (!Serial); // for Leonardo/Micro/Zero
+  #endif
+  Serial.begin(115200);
+  Serial.println("Hello!");
+
+  nfc.begin();
+
+  uint32_t versiondata = nfc.getFirmwareVersion();
+  if (! versiondata) {
+    Serial.print("Didn't find PN53x board");
+    while (1); // halt
+  }
+  // Got ok data, print it out!
+  Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX); 
+  Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
+  Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
+  
+  // configure board to read RFID tags
+  nfc.SAMConfig();
+  
+  Serial.println("Waiting for an ISO14443A Card ...");
+}
+```
+Here, the connection to the Arduino and the shield is established. When it made connection to the shield, it do the following:
+```
+Serial.println("Hello!");
+```
+Then begins the shield part. First, it checks the firmware version of the Shield. If it doesnt get a firmware version. It will print out that he couldn't find a PN532 board.
+```
+if (! versiondata) {
+    Serial.print("Didn't find PN53x board");
+```
+When it did find a board. It will print that it found a board, and will print the version data, and that it waits for a specific kind of card.
+
+```
+Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX); 
+  Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
+  Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
+  
+  // configure board to read RFID tags
+  nfc.SAMConfig();
+  
+  Serial.println("Waiting for an ISO14443A Card ...");
+}
+```
+
+If you upload the card, and do get the "Waiting for an ISO14443A Card...", you succesfully installed the shield. If not, read the above text carefully.
