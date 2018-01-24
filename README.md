@@ -127,3 +127,5 @@ if (uid == "value") {
 "do something";
 }
 // At "value" and "do something" you should fill in the value and the thing you want the code to do (duh).
+```
+I hope i explained everything clear.
