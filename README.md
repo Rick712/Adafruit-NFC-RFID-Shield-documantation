@@ -122,7 +122,8 @@ Like I said before, there are multiple kinds of NFC tags. The Adafruit shield on
 
 ## Final words
 These are basically all the things you need when you want to read a NFC tag. The rest of the code doesn't really matter. It is vital for the code to work, but it's not necessary to know what the code does. If you want to do something with a specific value, you can simply execute some code by making an if statement. An example of this could be:
-``` if (uid == "value") {
+``` 
+if (uid == "value") {
 "do something";
 }
 // At "value" and "do something" you should fill in the value and the thing you want the code to do (duh).
