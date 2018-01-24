@@ -90,3 +90,39 @@ Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX);
 ```
 
 If you upload the card, and do get the "Waiting for an ISO14443A Card...", you succesfully installed the shield. If not, read the above text carefully.
+
+## Reading out NFC tags
+As you can see, there is a whole lot of code left in the file. Most of it is irrelevant if you just want to read out a NFC tag. I will only explain the part that does matter.
+```
+uint8_t success;
+uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };
+uint8_t uidLength;
+```
+You can see it makes 3 variables of the type uint8_t. The first is succes, which explains itself. The second is uid[]. When the NFC tag is scanned, the value of the tag is stored in this variable. The third is uidLength. Basically, there are more than one type of NFC tag, and the difference between them is the length of their values. In uidLength is stored the amouth of values inside the tag.
+The uid[] is the most important thing if you want to do something with the response of the card, since it stores the values of the NFC tag. Each NFC tag is different, so you can execute some code if the value of the NFC tag is a specific code.
+
+```
+if (success) {
+    // Display some basic information about the card
+    Serial.println("Found an ISO14443A card");
+    Serial.print("  UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
+    Serial.print("  UID Value: ");
+    nfc.PrintHex(uid, uidLength);
+    Serial.println("");
+```
+This code basically tells the Arduino to print the variables that it declared above. It prints the UID length and the UID value. The UID value is the main thing you want to look at if you want to do something with the value of the NFC tag.
+```
+  if (uidLength == 7)
+    {
+      uint8_t data[32];
+      
+      Serial.println("Seems to be an NTAG2xx tag (7 byte UID)");	  
+ ```
+Like I said before, there are multiple kinds of NFC tags. The Adafruit shield only reads the tags with 7 values. In the code above the code checks if the tag has 7 values, and then executes the next lines of code.
+
+## Final words
+These are basically all the things you need when you want to read a NFC tag. The rest of the code doesn't really matter. It is vital for the code to work, but it's not necessary to know what the code does. If you want to do something with a specific value, you can simply execute some code by making an if statement. An example of this could be:
+``` if (uid == "value") {
+"do something";
+}
+// At "value" and "do something" you should fill in the value and the thing you want the code to do (duh).
